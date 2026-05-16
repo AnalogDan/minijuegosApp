@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MinijuegosApp">
         <activity
+            android:name=".brickgame.Brickgame"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
