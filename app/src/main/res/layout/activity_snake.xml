@@ -7,6 +7,7 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
+        android:layout_above="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/holo_red_light"
@@ -41,6 +42,7 @@
         android:id="@+id/bottomBar">
 
         <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/topBtn"
             android:layout_width="80dp"
             android:layout_height="50dp"
             android:background="@android:color/holo_green_light"
@@ -53,12 +55,15 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/leftBtn"
                 android:layout_width="80dp"
                 android:layout_height="50dp"
                 android:background="@android:color/holo_green_light"
                 android:src="@drawable/left_arrow"/>
 
             <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/rightBtn"
+                android:layout_marginStart="80dp"
                 android:layout_width="80dp"
                 android:layout_height="50dp"
                 android:background="@android:color/holo_green_light"
@@ -66,6 +71,7 @@
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/bottomBtn"
             android:layout_width="80dp"
             android:layout_height="50dp"
             android:background="@android:color/holo_green_light"
