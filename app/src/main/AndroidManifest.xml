@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MinijuegosApp">
         <activity
+            android:name=".tic_tac_toe.Tic_Tac_Toe"
+            android:exported="false" />
+        <activity
             android:name=".brickgame.Brickgame"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             android:exported="false"
@@ -21,7 +24,6 @@
             android:name=".brickgame.GameOver"
             android:exported="false"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".MainActivity"
             android:exported="true">
