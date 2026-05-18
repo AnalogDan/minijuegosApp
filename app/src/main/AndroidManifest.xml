@@ -13,6 +13,7 @@
         android:theme="@style/Theme.MinijuegosApp">
         <activity
             android:name=".brickgame.Brickgame"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
