@@ -25,7 +25,7 @@ public class GameView extends View {
 
     Context context;
     float ballX, ballY;
-    Velocity velocity = new Velocity(25,32);
+    Velocity velocity = new Velocity(25, 32);
     Handler handler;
     final long UPDATE_MILLIS = 30;
     Runnable runnable;
@@ -33,14 +33,14 @@ public class GameView extends View {
     Paint healthPaint = new Paint();
     Paint brickPaint = new Paint();
     float TEXT_SIZE = 120;
-    float paddleX,paddleY;
-    float oldX,oldPaddleX;
+    float paddleX, paddleY;
+    float oldX, oldPaddleX;
     int points = 0;
     int life = 3;
     Bitmap ball, paddle;
     int dWidth, dHeight;
     int ballWidth, ballHeight;
-    MediaPlayer mpHit, mpMiss,mpBreak;
+    MediaPlayer mpHit, mpMiss, mpBreak;
     Random random;
     Brick[] bricks = new Brick[30];
     int numBricks = 0;
@@ -49,7 +49,7 @@ public class GameView extends View {
 
     public GameView(Context context) {
         super(context);
-        this.context=context;
+        this.context = context;
         ball = BitmapFactory.decodeResource(getResources(), R.drawable.brickgame_ball);
         paddle = BitmapFactory.decodeResource(getResources(), R.drawable.brickgame_paddle);
         handler = new Handler();
@@ -66,7 +66,7 @@ public class GameView extends View {
         textPaint.setTextSize(TEXT_SIZE);
         textPaint.setTextAlign(Paint.Align.LEFT);
         healthPaint.setColor(Color.GREEN);
-        brickPaint.setColor(Color.argb(255,249,129,0));
+        brickPaint.setColor(Color.argb(255, 249, 129, 0));
         Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
@@ -74,9 +74,9 @@ public class GameView extends View {
         dHeight = size.y;
         random = new Random();
         ballX = random.nextInt(dWidth - 50);
-        ballY = dHeight/3;
-        paddleY = (dHeight * 4)/5;
-        paddleX = dWidth/2 - paddle.getWidth()/2;
+        ballY = dHeight / 3;
+        paddleY = (dHeight * 4) / 5;
+        paddleX = dWidth / 2 - paddle.getWidth() / 2;
         ballWidth = ball.getWidth();
         ballHeight = ball.getHeight();
         createBricks();
@@ -84,10 +84,10 @@ public class GameView extends View {
 
     private void createBricks() {
         int brickWidth = dWidth / 8;
-        int brickHeight = dHeight /16;
+        int brickHeight = dHeight / 16;
         for (int column = 0; column < 8; column++) {
             for (int row = 0; row < 3; row++) {
-                bricks[numBricks] = new Brick(row,column,brickWidth,brickHeight);
+                bricks[numBricks] = new Brick(row, column, brickWidth, brickHeight);
                 numBricks++;
             }
         }
@@ -96,101 +96,148 @@ public class GameView extends View {
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
+
+        // Fondo
         canvas.drawColor(Color.BLACK);
+
+        // Movimiento pelota
         ballX += velocity.getX();
         ballY += velocity.getY();
-        if((ballX>= dWidth - ball.getWidth()) || ballX <= 0){
+
+        // Rebote paredes laterales
+        if ((ballX >= dWidth - ball.getWidth()) || ballX <= 0) {
             velocity.setX(velocity.getX() * -1);
         }
-        if (ballY <= 0){
+
+        // Rebote parte superior
+        if (ballY <= 0) {
             velocity.setY(velocity.getY() * -1);
         }
-        if (ballY > paddleY+paddle.getHeight()){
-            ballX = 1 + random.nextInt(dWidth- ball.getWidth() -1);
-            ballY = dHeight/3;
-            if (mpMiss != null){
+
+        // Pelota cae
+        if (ballY > paddleY + paddle.getHeight()) {
+
+            ballX = 1 + random.nextInt(dWidth - ball.getWidth() - 1);
+            ballY = dHeight / 3;
+
+            if (mpMiss != null) {
                 mpMiss.start();
             }
+
             velocity.setX(xVelocity());
             velocity.setY(32);
+
             life--;
-            if (life == 0){
+
+            if (life == 0) {
                 gameOver = true;
-                //launchGameOver();
+                launchGameOver();
             }
-            if(((ballX + ball.getWidth()) >= paddleX)
-                    && (ballX <= paddleX + paddle.getWidth())
-                    && (ballY + ball.getHeight() >= paddleY)
-                    && (ballY + ballHeight <= paddleY +paddle.getHeight())){
-                if (mpHit != null){
-                    mpHit.start();
-                }
-                velocity.setX(velocity.getX() + 1);
-                velocity.setY((velocity.getY() + 1) *-1);
-                canvas.drawBitmap(ball,ballX, ballY, null);
-                canvas.drawBitmap(paddle,paddleX,paddleY,null);
-                for (int i=0; i < numBricks; i++){
-                    if(bricks[i].getVisibility()){
-                        canvas.drawRect(bricks[i].column*bricks[i].width + 1,
-                                bricks[i].row * bricks[i].height + 1,
-                                bricks[i].column * bricks[i].width + bricks[i].width -1,
-                                bricks[i].row * bricks[i].height + bricks[i].height -1, brickPaint);
+        }
+
+        // Colisión con paleta
+        if (((ballX + ball.getWidth()) >= paddleX)
+                && (ballX <= paddleX + paddle.getWidth())
+                && (ballY + ball.getHeight() >= paddleY)
+                && (ballY + ballHeight <= paddleY + paddle.getHeight())) {
+
+            if (mpHit != null) {
+                mpHit.start();
+            }
+
+            velocity.setX(velocity.getX() + 1);
+            velocity.setY((velocity.getY() + 1) * -1);
+        }
+
+        // Dibujar pelota
+        canvas.drawBitmap(ball, ballX, ballY, null);
+
+        // Dibujar paleta
+        canvas.drawBitmap(paddle, paddleX, paddleY, null);
+
+        // Dibujar bricks
+        for (int i = 0; i < numBricks; i++) {
+
+            if (bricks[i].getVisibility()) {
+
+                canvas.drawRect(
+                        bricks[i].column * bricks[i].width + 1,
+                        bricks[i].row * bricks[i].height + 1,
+                        bricks[i].column * bricks[i].width + bricks[i].width - 1,
+                        bricks[i].row * bricks[i].height + bricks[i].height - 1,
+                        brickPaint
+                );
+
+                // Colisión pelota-brick
+                if (ballX + ballWidth >= bricks[i].column * bricks[i].width
+                        && ballX <= bricks[i].column * bricks[i].width + bricks[i].width
+                        && ballY <= bricks[i].row * bricks[i].height + bricks[i].height
+                        && ballY >= bricks[i].row * bricks[i].height) {
+
+                    if (mpBreak != null) {
+                        mpBreak.start();
                     }
-                }
-                canvas.drawText("" + points,20,TEXT_SIZE,textPaint);
-                if(life== 2){
-                    healthPaint.setColor(Color.YELLOW);
-                } else if (life == 1){
-                    healthPaint.setColor(Color.RED);
-                }
-                canvas.drawRect(dWidth-200, 30,dWidth-200 + 60 * life, 80, healthPaint);
-                for (int i = 0; i < numBricks; i++) {
-                    if(bricks[i].getVisibility()) {
-                        if(ballX + ballWidth >= bricks[i].column*bricks[i].width
-                                && ballX <= bricks[i].column * bricks[i].width + bricks[i].width
-                                && ballY <= bricks[i].row * bricks[i].height + bricks[i].height
-                                && ballY >= bricks[i].row * bricks[i].height){
-                            if (mpBreak != null){
-                                mpBreak.start();
-                            }
-                            velocity.setY((velocity.getY() + 1) * -1);
-                            bricks[i].setInvisible();
-                            points += 10;
-                            brokenBricks ++;
-                            if (brokenBricks == 24){
-                                //launchGameOver();
-                            }
-                        }
-                    }
-                }
-                if (brokenBricks == numBricks){
-                    gameOver = true;
-                }
-                if(!gameOver){
-                    handler.postDelayed(runnable,UPDATE_MILLIS);
+
+                    velocity.setY((velocity.getY() + 1) * -1);
+
+                    bricks[i].setInvisible();
+
+                    points += 10;
+
+                    brokenBricks++;
                 }
             }
         }
+
+        // Mostrar puntos
+        canvas.drawText("" + points, 20, TEXT_SIZE, textPaint);
+
+        // Barra de vida
+        if (life == 2) {
+            healthPaint.setColor(Color.YELLOW);
+        } else if (life == 1) {
+            healthPaint.setColor(Color.RED);
+        }
+
+        canvas.drawRect(
+                dWidth - 200,
+                30,
+                dWidth - 200 + 60 * life,
+                80,
+                healthPaint
+        );
+
+        // Ganar juego
+        if (brokenBricks == numBricks) {
+            gameOver = true;
+            launchGameOver();
+        }
+
+        // Siguiente frame
+        if (!gameOver) {
+            handler.postDelayed(runnable, UPDATE_MILLIS);
+        }
     }
+
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         float touchX = event.getX();
         float touchY = event.getY();
-        if (touchY >= paddleY){
+        if (touchY >= paddleY) {
             int action = event.getAction();
-            if (action == MotionEvent.ACTION_DOWN){
+            if (action == MotionEvent.ACTION_DOWN) {
                 oldX = event.getX();
                 oldPaddleX = paddleX;
             }
-            if(action == MotionEvent.ACTION_MOVE){
+            if (action == MotionEvent.ACTION_MOVE) {
                 float shift = oldX - touchX;
                 float newPaddleX = oldPaddleX - shift;
-                if( newPaddleX <= 0){
+                if (newPaddleX <= 0) {
                     paddleX = 0;
-                } else if (newPaddleX >= dWidth - paddle.getWidth()){
+                } else if (newPaddleX >= dWidth - paddle.getWidth()) {
                     paddleX = dWidth - paddle.getWidth();
-                } else{
+                } else {
                     paddleX = newPaddleX;
                 }
             }
@@ -200,9 +247,9 @@ public class GameView extends View {
 
     private void launchGameOver() {
         handler.removeCallbacksAndMessages(null);
-        /*Intent intent = new Intent(context, GameOver.class);
+        Intent intent = new Intent(context, GameOver.class);
         intent.putExtra("points",points);
-        context.startActivity(intent);*/
+        context.startActivity(intent);
         ((Activity) context).finish();
     }
 

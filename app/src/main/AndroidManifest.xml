@@ -14,7 +14,14 @@
         <activity
             android:name=".brickgame.Brickgame"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".brickgame.GameOver"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
