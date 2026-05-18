@@ -13,4 +13,17 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
+    
+    <style name="Theme.TicTacToe" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!--color primario-->
+        <item name="colorPrimary">@color/morado_500</item>
+        <item name="colorPrimaryVariant">@color/morado_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!--color secundario-->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!--Status bar color-->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+    </style>
 </resources>
