@@ -9,6 +9,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.media.MediaPlayer;
 import android.os.Handler;
 import android.view.Display;
@@ -29,9 +31,23 @@ public class GameView extends View {
     Handler handler;
     final long UPDATE_MILLIS = 30;
     Runnable runnable;
+    int[] palette = {
+            Color.parseColor("#001F3F"),
+            Color.parseColor("#003566"),
+            Color.parseColor("#00509D"),
+            Color.parseColor("#C100D8"),
+            Color.parseColor("#FF5DD8"),
+            Color.parseColor("#C053FF")
+    };
+    //Gestión de colores
+    int currentBallColor;
+    int currentPaddleColor;
+    int backgroundColor = Color.parseColor("#D3FFF7"); // azul oscuro
     Paint textPaint = new Paint();
     Paint healthPaint = new Paint();
     Paint brickPaint = new Paint();
+    Paint ballPaint = new Paint();
+    Paint paddlePaint = new Paint();
     float TEXT_SIZE = 120;
     float paddleX, paddleY;
     float oldX, oldPaddleX;
@@ -42,7 +58,7 @@ public class GameView extends View {
     int ballWidth, ballHeight;
     MediaPlayer mpHit, mpMiss, mpBreak;
     Random random;
-    Brick[] bricks = new Brick[30];
+    Brick[] bricks = new Brick[32];
     int numBricks = 0;
     int brokenBricks = 0;
     boolean gameOver = false;
@@ -66,7 +82,10 @@ public class GameView extends View {
         textPaint.setTextSize(TEXT_SIZE);
         textPaint.setTextAlign(Paint.Align.LEFT);
         healthPaint.setColor(Color.GREEN);
-        brickPaint.setColor(Color.argb(255, 249, 129, 0));
+        //brickPaint.setColor(Color.argb(255, 249, 129, 0));
+        //Colores
+        currentBallColor = palette[2];
+        currentPaddleColor = palette[3];
         Display display = ((Activity) getContext()).getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
@@ -86,8 +105,8 @@ public class GameView extends View {
         int brickWidth = dWidth / 8;
         int brickHeight = dHeight / 16;
         for (int column = 0; column < 8; column++) {
-            for (int row = 0; row < 3; row++) {
-                bricks[numBricks] = new Brick(row, column, brickWidth, brickHeight);
+            for (int row = 0; row < 4; row++) {
+                bricks[numBricks] = new Brick(row, column, brickWidth, brickHeight,randomPaletteColor());
                 numBricks++;
             }
         }
@@ -98,7 +117,7 @@ public class GameView extends View {
         super.onDraw(canvas);
 
         // Fondo
-        canvas.drawColor(Color.BLACK);
+        canvas.drawColor(backgroundColor);
 
         // Movimiento pelota
         ballX += velocity.getX();
@@ -106,12 +125,20 @@ public class GameView extends View {
 
         // Rebote paredes laterales
         if ((ballX >= dWidth - ball.getWidth()) || ballX <= 0) {
+            if (mpHit != null) {
+                mpHit.start();
+            }
             velocity.setX(velocity.getX() * -1);
+            currentBallColor = randomPaletteColor();
         }
 
         // Rebote parte superior
         if (ballY <= 0) {
+            if (mpHit != null) {
+                mpHit.start();
+            }
             velocity.setY(velocity.getY() * -1);
+            currentBallColor = randomPaletteColor();
         }
 
         // Pelota cae
@@ -147,19 +174,28 @@ public class GameView extends View {
 
             velocity.setX(velocity.getX() + 1);
             velocity.setY((velocity.getY() + 1) * -1);
+            currentBallColor = randomPaletteColor();
+            currentPaddleColor = randomPaletteColor();
         }
 
+        //Colorear sprites
+        ballPaint.setColorFilter(
+                new PorterDuffColorFilter(currentBallColor, PorterDuff.Mode.SRC_ATOP)
+        );
+        paddlePaint.setColorFilter(
+                new PorterDuffColorFilter(currentPaddleColor, PorterDuff.Mode.SRC_ATOP)
+        );
         // Dibujar pelota
-        canvas.drawBitmap(ball, ballX, ballY, null);
+        canvas.drawBitmap(ball, ballX, ballY, ballPaint);
 
         // Dibujar paleta
-        canvas.drawBitmap(paddle, paddleX, paddleY, null);
+        canvas.drawBitmap(paddle, paddleX, paddleY, paddlePaint);
 
         // Dibujar bricks
         for (int i = 0; i < numBricks; i++) {
 
             if (bricks[i].getVisibility()) {
-
+                brickPaint.setColor(bricks[i].color);
                 canvas.drawRect(
                         bricks[i].column * bricks[i].width + 1,
                         bricks[i].row * bricks[i].height + 1,
@@ -179,6 +215,7 @@ public class GameView extends View {
                     }
 
                     velocity.setY((velocity.getY() + 1) * -1);
+                    currentBallColor = randomPaletteColor();
 
                     bricks[i].setInvisible();
 
@@ -257,5 +294,8 @@ public class GameView extends View {
         int[] values = {-35, -30, -25, 25, 30, 35};
         int index = random.nextInt(values.length);
         return values[index];
+    }
+    private int randomPaletteColor() {
+        return palette[random.nextInt(palette.length)];
     }
 }
