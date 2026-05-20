@@ -1,7 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MinijuegosApp</string>
-    <string name="snake">Snake</string>
-    <string name="brickgame">BrickGame</string>
     <string name="ingrese_n_los_nombres_de_los_jugadores">Ingrese \n los nombres de los jugadores</string>
     <string name="introduce_el_nombre_del_jugador_1">Introduce el nombre del jugador 1</string>
     <string name="introduce_el_nombre_del_jugador_2">Introduce el nombre del jugador 2</string>

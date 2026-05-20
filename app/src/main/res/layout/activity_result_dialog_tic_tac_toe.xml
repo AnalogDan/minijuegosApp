@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -7,4 +8,40 @@
     android:layout_height="match_parent"
     tools:context=".tic_tac_toe.ResultDialog">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/lavanda"
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:id="@+id/mensajeTexto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:gravity="center"
+            android:text="@string/resultado"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:ignore="TextContrastCheck,VisualLintSystemUi" />
+
+        <Button
+            android:id="@+id/btnIniciarDeNuevo"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="20dp"
+            android:backgroundTint="@color/white"
+            android:text="@string/iniciar_de_nuevo"
+            android:textColor="@color/lavanda"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:cornerRadius="20dp"
+            tools:ignore="TextContrastCheck,VisualLintButtonSize" />
+
+    </LinearLayout>
+
+</RelativeLayout>

@@ -29,48 +29,52 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ingrese \n los nombres de los jugadores"
+                android:text="@string/ingrese_n_los_nombres_de_los_jugadores"
                 android:textAlignment="center"
-                android:textSize="36dp"
+                android:textColor="@color/lavanda"
+                android:textSize="36sp"
                 android:textStyle="bold"
-                android:textColor="@color/lavanda"/>
+                tools:ignore="TextContrastCheck" />
 
             <EditText
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
                 android:id="@+id/jugadorUno"
-                android:background="@drawable/borde_lavanda"
-                android:layout_marginTop="40dp"
-                android:padding="8dp"
-                android:maxLines="1"
-                android:textStyle="italic"
-                android:hint="Introduce el nombre del jugador 1"
-                android:textColor="@color/lavanda"
-                android:drawableLeft="@drawable/xicono"
-                android:drawablePadding="8dp"/>
-
-            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:id="@+id/jugadorDos"
+                android:layout_marginTop="40dp"
                 android:background="@drawable/borde_lavanda"
-                android:layout_marginTop="20dp"
-                android:padding="8dp"
+                android:drawableLeft="@drawable/xicono"
+                android:drawablePadding="8dp"
+                android:hint="@string/introduce_el_nombre_del_jugador_1"
                 android:maxLines="1"
-                android:textStyle="italic"
-                android:hint="Introduce el nombre del jugador 2"
+                android:padding="3dp"
                 android:textColor="@color/lavanda"
+                android:textStyle="italic"
+                tools:ignore="Autofill,RtlHardcoded,TextContrastCheck,TextFields" />
+
+            <EditText
+                android:id="@+id/jugadorDos"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/borde_lavanda"
                 android:drawableLeft="@drawable/ic_oicon"
-                android:drawablePadding="8dp"/>
+                android:drawablePadding="8dp"
+                android:hint="@string/introduce_el_nombre_del_jugador_2"
+                android:maxLines="1"
+                android:padding="3dp"
+                android:textColor="@color/lavanda"
+                android:textStyle="italic"
+                tools:ignore="Autofill,RtlHardcoded,TextContrastCheck,TextFields" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="30dp"
                 android:id="@+id/btnIniciar"
-                android:text="Iniciar el juego"
+                android:text="@string/iniciar_el_juego"
                 android:textSize="18sp"
-                app:cornerRadius = "20dp"/>
+                app:cornerRadius = "20dp"
+                tools:ignore="VisualLintButtonSize" />
 
         </LinearLayout>
 
