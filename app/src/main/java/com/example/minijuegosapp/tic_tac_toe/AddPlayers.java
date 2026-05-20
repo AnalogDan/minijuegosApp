@@ -3,6 +3,7 @@ package com.example.minijuegosapp.tic_tac_toe;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.example.minijuegosapp.MainActivity;
 import com.example.minijuegosapp.R;
@@ -38,7 +40,7 @@ public class AddPlayers extends AppCompatActivity {
                 if (getjugadorUnoNombre.isEmpty()||getjugadorDosNombre.isEmpty()){
                     Toast.makeText(AddPlayers.this, "Por favor introduce el nombre del jugador", Toast.LENGTH_SHORT).show();
                 }else {
-                    Intent intent = new Intent(AddPlayers.this, MainActivity.class);
+                    Intent intent = new Intent(AddPlayers.this, Tic_Tac_Toe.class);
                     intent.putExtra("jugador1", getjugadorUnoNombre);
                     intent.putExtra("jugador2", getjugadorDosNombre);
                     startActivity(intent);

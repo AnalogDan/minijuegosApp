@@ -2,6 +2,7 @@ package com.example.minijuegosapp.tic_tac_toe;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.example.minijuegosapp.R;
 
@@ -29,6 +31,17 @@ public class Tic_Tac_Toe extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_tic_tac_toe);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        WindowInsetsControllerCompat controller =
+                ViewCompat.getWindowInsetsController(getWindow().getDecorView());
+
+        if (controller != null) {
+            controller.hide(WindowInsetsCompat.Type.systemBars());
+            controller.setSystemBarsBehavior(
+                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            );
+        }
 
         listaConbinada.add(new int[]{0,1,2});
         listaConbinada.add(new int[]{3,4,5});
@@ -43,7 +56,7 @@ public class Tic_Tac_Toe extends AppCompatActivity {
         String getjugadorDosNombre = getIntent().getStringExtra("jugador2");
 
         ((TextView)findViewById(R.id.jugadorUnoNombre)).setText(getjugadorUnoNombre);
-        ((TextView)findViewById(R.id.jugadorDosNombre)).setText(getjugadorUnoNombre);
+        ((TextView)findViewById(R.id.jugadorDosNombre)).setText(getjugadorDosNombre);
 
         findViewById(R.id.image1).setOnClickListener(new View.OnClickListener() {
             @Override
